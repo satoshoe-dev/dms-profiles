@@ -18,7 +18,7 @@ Há 29 transições para escolher, entre elas esmaecer, cortina, círculo, porta
 
 ## Seletor
 
-O seletor tem quatro visualizações: uma fileira sobre um painel, a mesma fileira sem o painel, um carrossel com o perfil atual grande no meio e uma grade que ocupa a tela toda. As prévias podem ser em retrato, paisagem, quadrado, círculo, hexágono ou losango. Na grade, hexágonos e losangos ficam dispostos como um favo de mel, com o mesmo espaçamento das suas janelas. Contorno, brilho, marca de seleção e arredondamento dos cantos podem ser desligados ou ajustados.
+O seletor tem quatro visualizações: uma fileira sobre um painel, a mesma fileira sem o painel, um carrossel com o perfil atual grande no meio e uma grade que ocupa a tela toda. As prévias podem ser em retrato, paisagem, quadrado, círculo, hexágono, losango ou inclinado (retrato com a moldura inclinada). Na grade, hexágonos e losangos ficam dispostos como um favo de mel, com o mesmo espaçamento das suas janelas. Contorno, brilho, marca de seleção e arredondamento dos cantos podem ser desligados ou ajustados.
 
 A roda do mouse e as setas movem a seleção, Enter ou um clique aplica, Esc fecha o seletor.
 

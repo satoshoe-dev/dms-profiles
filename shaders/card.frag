@@ -24,6 +24,7 @@ layout(std140, binding = 0) uniform buf {
     float border;       // px border width
     float glow;         // 0..1 outer glow
     float dim;          // 0..1 darken
+    float skew;         // frame shear: x moves by skew * y, the picture stays upright
     vec4 borderColor;
 } ubuf;
 
@@ -57,21 +58,24 @@ float diamondDistance(vec2 p, vec2 b) {
 void main() {
     vec2 area = vec2(ubuf.areaW, ubuf.areaH);
     vec2 card = area - 2.0 * ubuf.padding;
-    vec2 halfSize = card * 0.5;
+    // a sheared frame needs |skew| * height of extra width; the box itself is narrower
+    vec2 halfSize = vec2(card.x - abs(ubuf.skew) * card.y, card.y) * 0.5;
     vec2 p = qt_TexCoord0 * area - area * 0.5;
+    // the frame is measured in sheared space, the picture in plain space
+    vec2 q = vec2(p.x - ubuf.skew * p.y, p.y);
     int shape = int(ubuf.shape + 0.5);
 
     float d;
     if (shape == 1) {
-        d = length(p) - min(halfSize.x, halfSize.y);
+        d = length(q) - min(halfSize.x, halfSize.y);
     } else if (shape == 2) {
         float r = min(halfSize.y, halfSize.x * 0.866025404) - ubuf.corner * 0.5;
-        d = hexagonDistance(p, r) - ubuf.corner * 0.5;
+        d = hexagonDistance(q, r) - ubuf.corner * 0.5;
     } else if (shape == 3) {
         float r = min(halfSize.x, halfSize.y);
-        d = diamondDistance(p, vec2(r) - ubuf.corner * 0.7) - ubuf.corner * 0.5;
+        d = diamondDistance(q, vec2(r) - ubuf.corner * 0.7) - ubuf.corner * 0.5;
     } else {
-        d = boxDistance(p, halfSize, min(ubuf.corner, min(halfSize.x, halfSize.y)));
+        d = boxDistance(q, halfSize, min(ubuf.corner, min(halfSize.x, halfSize.y)));
     }
 
     // crop like PreserveAspectCrop

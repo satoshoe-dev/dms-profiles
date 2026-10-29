@@ -4,7 +4,8 @@
 // The image is `thumb` (wide preview made from the wallpaper), else the
 // wallpaper itself.
 //
-// Shapes: portrait (9:16), landscape (16:10), square, circle, hexagon, diamond
+// Shapes: portrait (9:16), landscape (16:10), square, circle, hexagon, diamond,
+// skewed (portrait with a slanted frame; the picture stays upright)
 
 pragma ComponentBehavior: Bound
 
@@ -25,7 +26,10 @@ Item {
     signal hovered
     signal activated
 
-    readonly property real aspectRatio: shape === "portrait" ? 9 / 16 : (shape === "landscape" ? 16 / 10 : 1)
+    // skewed: the box also holds the slant (0.35 * height), so the frame itself is 0.9 - 0.35 = 9:16
+    readonly property real aspectRatio: shape === "portrait" ? 9 / 16 : (shape === "landscape" ? 16 / 10 : (shape === "skewed" ? 0.9 : 1))
+    // frame shear: x moves by skew * y, so the top leans right
+    readonly property real skew: shape === "skewed" ? -0.35 : 0
     readonly property real imageWidth: imageHeight * aspectRatio
     readonly property int shapeIndex: ({
             "circle": 1,
@@ -108,6 +112,7 @@ Item {
         property real border: card.ringEmphasized ? 3 * Math.max(1, card.imageHeight / 400) : 1
         property real glow: card.glowEnabled ? card.highlight : 0
         property real dim: card.dim
+        property real skew: card.skew
         // Color is shared by border and glow. Without the emphasized ring the
         // border stays subtle while the glow keeps the accent color.
         property color borderColor: card.ringEmphasized || (card.glowEnabled && card.highlight > 0.01 && !card.ringEnabled) ? Theme.primary : Theme.withAlpha(Theme.outline, 0.35)
@@ -122,7 +127,8 @@ Item {
         height: width
         radius: width / 2
         color: Theme.surfaceContainer
-        x: card.shapeIndex === 0 ? card.imageWidth - width - Theme.spacingS : (card.imageWidth - width) / 2
+        // the right edge of a sheared frame moves with the row (skew 0: nothing changes)
+        x: card.shapeIndex === 0 ? card.imageWidth - width - Theme.spacingS + card.skew * (y + height / 2) : (card.imageWidth - width) / 2
         y: card.shapeIndex === 0 ? Theme.spacingS : card.imageHeight * (card.shapeIndex === 1 ? 0.04 : 0.1)
 
         DankIcon {
@@ -138,7 +144,8 @@ Item {
         visible: card.showName
         y: card.imageHeight + Theme.spacingS
         width: Math.max(card.imageWidth, 120)
-        x: (card.imageWidth - width) / 2
+        // centered under the bottom edge of the frame (skewed: that edge is shifted)
+        x: (card.imageWidth - width) / 2 + card.skew * card.imageHeight / 2
         horizontalAlignment: Text.AlignHCenter
         elide: Text.ElideRight
         text: card.profile?.name ?? ""
@@ -147,9 +154,19 @@ Item {
         font.weight: card.selected ? Font.Medium : Font.Normal
     }
 
+    QtObject {
+        id: shearMask
+        function contains(pt: point): bool {
+            const dx = pt.x - card.imageWidth / 2 - card.skew * (pt.y - card.imageHeight / 2);
+            return Math.abs(dx) <= (card.imageWidth - Math.abs(card.skew) * card.imageHeight) / 2;
+        }
+    }
+
     MouseArea {
         width: card.imageWidth
         height: card.imageHeight
+        // only the sheared frame counts, not the corners of its bounding box
+        containmentMask: card.skew === 0 ? null : shearMask
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onEntered: card.hovered()

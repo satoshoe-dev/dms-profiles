@@ -32,7 +32,7 @@ Item {
         }
     }
 
-    readonly property real aspectRatio: shape === "portrait" ? 9 / 16 : (shape === "landscape" ? 16 / 10 : 1)
+    readonly property real aspectRatio: shape === "portrait" ? 9 / 16 : (shape === "landscape" ? 16 / 10 : (shape === "skewed" ? 0.9 : 1))
     // share of the height for the center card; larger in the dashboard tab,
     // where the labels are smaller
     property real heightShare: 0.54
@@ -41,17 +41,20 @@ Item {
     property color textColor: "white"
     property color textColorDim: Qt.rgba(1, 1, 1, 0.7)
     readonly property real centerHeight: {
-        if (shape === "portrait")
+        if (shape === "portrait" || shape === "skewed")
             return height * heightShare;
         if (shape === "landscape")
             return Math.min(height * heightShare * 0.82, width * 0.38 / aspectRatio);
         return height * heightShare * 0.82;
     }
     readonly property real centerWidth: centerHeight * aspectRatio
+    // skewed: the card box also holds the slant (as in ProfileCard), the frame is narrower
+    readonly property real skew: shape === "skewed" ? -0.35 : 0
+    readonly property real frameWidth: centerWidth + skew * centerHeight
 
     function offset(d) {
         const a = Math.abs(d);
-        return Math.sign(d) * centerWidth * 0.8 * (1 - Math.pow(falloff, a)) / (1 - falloff);
+        return Math.sign(d) * frameWidth * 0.8 * (1 - Math.pow(falloff, a)) / (1 - falloff);
     }
 
     function step(n) {
@@ -127,6 +130,8 @@ Item {
         visible: carousel.count > 0
         z: 2000
         anchors.horizontalCenter: parent.horizontalCenter
+        // under the bottom edge of the frame, which a skewed card shifts sideways
+        anchors.horizontalCenterOffset: carousel.skew * carousel.centerHeight / 2
         y: (carousel.height + carousel.centerHeight) / 2 - carousel.height * 0.04 + Theme.spacingXL
         spacing: Theme.spacingXS
 

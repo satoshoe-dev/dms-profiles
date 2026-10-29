@@ -18,7 +18,7 @@ Zur Wahl stehen 29 Übergänge, darunter Überblenden, Wischen, Kreis, Türen, J
 
 ## Profilauswahl
 
-Die Auswahl gibt es in vier Ansichten: eine Leiste mit Rahmen, dieselbe Leiste frei ohne Rahmen, ein Karussell mit dem aktuellen Profil groß in der Mitte und Kacheln über den ganzen Bildschirm. Die Vorschaubilder können hochkant, quer, quadratisch, rund, sechseckig oder rautenförmig sein. In der Kachelansicht liegen Sechsecke und Rauten als Waben, mit demselben Abstand wie die Fenster. Rahmen, Leuchten, Haken und Eckenradius lassen sich abschalten oder anpassen.
+Die Auswahl gibt es in vier Ansichten: eine Leiste mit Rahmen, dieselbe Leiste frei ohne Rahmen, ein Karussell mit dem aktuellen Profil groß in der Mitte und Kacheln über den ganzen Bildschirm. Die Vorschaubilder können hochkant, quer, quadratisch, rund, sechseckig, rautenförmig oder schräg (hochkant mit geneigtem Rahmen) sein. In der Kachelansicht liegen Sechsecke und Rauten als Waben, mit demselben Abstand wie die Fenster. Rahmen, Leuchten, Haken und Eckenradius lassen sich abschalten oder anpassen.
 
 Mausrad und Pfeiltasten bewegen die Auswahl, Enter oder ein Klick wendet das Profil an, Escape schließt die Auswahl.
 

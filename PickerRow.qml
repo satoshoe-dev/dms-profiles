@@ -18,10 +18,12 @@ Item {
     property string shape: "portrait"
 
     readonly property int count: ctl ? ctl.profiles.length : 0
-    readonly property real baseHeight: shape === "portrait" ? 290 : (shape === "landscape" ? 170 : 200)
-    readonly property real baseWidth: baseHeight * (shape === "portrait" ? 9 / 16 : (shape === "landscape" ? 16 / 10 : 1))
+    readonly property real baseHeight: shape === "portrait" || shape === "skewed" ? 290 : (shape === "landscape" ? 170 : 200)
+    readonly property real baseWidth: baseHeight * (shape === "portrait" ? 9 / 16 : (shape === "landscape" ? 16 / 10 : (shape === "skewed" ? 0.9 : 1)))
+    // skewed frames nest into each other: their boxes overlap by the slant
+    readonly property real overlap: shape === "skewed" ? 0.35 * baseHeight : 0
     readonly property real gap: framed ? Theme.spacingM : Theme.spacingL
-    readonly property real naturalWidth: count * baseWidth + Math.max(0, count - 1) * gap
+    readonly property real naturalWidth: count * baseWidth + Math.max(0, count - 1) * (gap - overlap)
     // fit width and height (the dashboard tab is only about 340 px high)
     readonly property real factor: count > 0 ? Math.max(0.2, Math.min(1, (width - Theme.spacingL * 8) / naturalWidth, (height - Theme.spacingL * 3 - Theme.fontSizeMedium * 2) / baseHeight)) : 1
 
@@ -52,7 +54,7 @@ Item {
     Row {
         id: cards
         anchors.centerIn: parent
-        spacing: row.gap * row.factor
+        spacing: (row.gap - row.overlap) * row.factor
 
         Repeater {
             model: row.ctl ? row.ctl.profiles : []

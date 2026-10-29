@@ -30,7 +30,8 @@ Item {
         return o >= 0 ? o : Math.max(4, SettingsData.getPrimaryBarConfig()?.spacing ?? 4);
     }
     readonly property bool honeycomb: shape === "hexagon" || shape === "diamond"
-    readonly property real aspectRatio: shape === "portrait" ? 9 / 16 : (shape === "landscape" ? 16 / 10 : 1)
+    readonly property real aspectRatio: shape === "portrait" ? 9 / 16 : (shape === "landscape" ? 16 / 10 : (shape === "skewed" ? 0.9 : 1))
+
     // can be reduced from outside (dashboard tab)
     property real margin: Math.max(48, width * 0.04)
     property real labelSpace: honeycomb ? 96 : 0
@@ -63,7 +64,8 @@ Item {
                 const hH = (areaH - c * (rows - 1)) / (rows + 1);
                 h = 2 * Math.min(hW, hH);
             } else {
-                const w = (areaW - (columns - 1) * g) / columns;
+                // skewed: boxes nest into each other, so the row is the frames (9/16 h) plus one slant (0.35 h)
+                const w = shape === "skewed" ? (areaW - (columns - 1) * g) / (columns * (aspectRatio - 0.35) + 0.35) * aspectRatio : (areaW - (columns - 1) * g) / columns;
                 h = Math.min(w / aspectRatio, (areaH - (rows - 1) * g) / rows - nameHeight);
             }
             if (h > best.height + 0.5)
@@ -79,6 +81,9 @@ Item {
     readonly property int rows: Math.ceil(Math.max(1, count) / columns)
     readonly property real cardSize: layout.height
 
+    // skewed boxes overlap by the slant: neighbours are closer by this much
+    readonly property real slant: shape === "skewed" ? 0.35 * cardSize : 0
+
     // total size for centering
     readonly property real blockW: {
         const g = gap;
@@ -91,7 +96,7 @@ Item {
             const a = cardSize / 2 + g / 1.4142136;
             return (columns - 1) * 2 * a + cardSize + (rows > 1 ? a : 0);
         }
-        return columns * cardSize * aspectRatio + (columns - 1) * g;
+        return columns * cardSize * aspectRatio + (columns - 1) * (g - slant);
     }
     readonly property real blockH: {
         const g = gap;
@@ -155,8 +160,8 @@ Item {
                     return grid.x0 + column * 2 * a + (row % 2) * a;
                 }
                 const b = grid.cardSize * grid.aspectRatio;
-                const rowW = inRow * b + (inRow - 1) * g;
-                return (grid.width - rowW) / 2 + column * (b + g);
+                const rowW = inRow * b + (inRow - 1) * (g - grid.slant);
+                return (grid.width - rowW) / 2 + column * (b + g - grid.slant);
             }
             y: {
                 const g = grid.gap;

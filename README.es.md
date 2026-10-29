@@ -18,7 +18,7 @@ Hay 29 transiciones para elegir, entre ellas fundido, barrido, círculo, puertas
 
 ## Selector
 
-El selector tiene cuatro vistas: una fila sobre un panel, la misma fila sin panel, un carrusel con el perfil actual en grande en el centro y una cuadrícula que llena la pantalla. Las vistas previas pueden ser verticales, horizontales, cuadradas, circulares, hexagonales o en rombo. En la cuadrícula, los hexágonos y los rombos se colocan como un panal, con la misma separación que tus ventanas. El contorno, el brillo, la marca y el radio de las esquinas se pueden desactivar o ajustar.
+El selector tiene cuatro vistas: una fila sobre un panel, la misma fila sin panel, un carrusel con el perfil actual en grande en el centro y una cuadrícula que llena la pantalla. Las vistas previas pueden ser verticales, horizontales, cuadradas, circulares, hexagonales, en rombo o inclinadas (verticales con el marco inclinado). En la cuadrícula, los hexágonos y los rombos se colocan como un panal, con la misma separación que tus ventanas. El contorno, el brillo, la marca y el radio de las esquinas se pueden desactivar o ajustar.
 
 La rueda del ratón y las flechas mueven la selección, Intro o un clic la aplica y Escape cierra el selector.
 

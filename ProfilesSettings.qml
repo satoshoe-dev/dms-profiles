@@ -455,6 +455,10 @@ PluginSettings {
             {
                 label: I18n.trFor("dmsProfiles", "Diamond"),
                 value: "diamond"
+            },
+            {
+                label: I18n.trFor("dmsProfiles", "Skewed"),
+                value: "skewed"
             }
         ]
     }

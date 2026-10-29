@@ -18,7 +18,7 @@ Vous avez le choix entre 29 transitions, dont fondu, balayage, cercle, portes, s
 
 ## Sélecteur
 
-Le sélecteur propose quatre affichages : une rangée sur un panneau, la même rangée sans panneau, un carrousel avec le profil actuel en grand au centre, et une grille qui remplit l'écran. Les aperçus peuvent être en portrait, en paysage, carrés, ronds, hexagonaux ou en losange. Dans la grille, les hexagones et les losanges sont disposés en nid d'abeille, avec le même espacement que vos fenêtres. Le contour, le halo, la coche et le rayon des coins peuvent être désactivés ou réglés.
+Le sélecteur propose quatre affichages : une rangée sur un panneau, la même rangée sans panneau, un carrousel avec le profil actuel en grand au centre, et une grille qui remplit l'écran. Les aperçus peuvent être en portrait, en paysage, carrés, ronds, hexagonaux, en losange ou inclinés (portrait avec un cadre incliné). Dans la grille, les hexagones et les losanges sont disposés en nid d'abeille, avec le même espacement que vos fenêtres. Le contour, le halo, la coche et le rayon des coins peuvent être désactivés ou réglés.
 
 La molette de la souris et les flèches déplacent la sélection, Entrée ou un clic l'applique, Échap ferme le sélecteur.
 

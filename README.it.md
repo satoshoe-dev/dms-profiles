@@ -18,7 +18,7 @@ Puoi scegliere fra 29 transizioni, tra cui dissolvenza, tendina, cerchio, porte,
 
 ## Selettore
 
-Il selettore ha quattro viste: una fila su un pannello, la stessa fila senza pannello, un carosello con il profilo attuale grande al centro e una griglia che riempie lo schermo. Le anteprime possono essere verticali, orizzontali, quadrate, circolari, esagonali o a rombo. Nella griglia, esagoni e rombi sono disposti a nido d'ape con la stessa distanza delle tue finestre. Contorno, bagliore, spunta e raggio degli angoli si possono disattivare o regolare.
+Il selettore ha quattro viste: una fila su un pannello, la stessa fila senza pannello, un carosello con il profilo attuale grande al centro e una griglia che riempie lo schermo. Le anteprime possono essere verticali, orizzontali, quadrate, circolari, esagonali, a rombo o inclinate (verticali con la cornice inclinata). Nella griglia, esagoni e rombi sono disposti a nido d'ape con la stessa distanza delle tue finestre. Contorno, bagliore, spunta e raggio degli angoli si possono disattivare o regolare.
 
 La rotella del mouse e i tasti freccia spostano la selezione, Invio o un clic la applica, Esc chiude il selettore.
 

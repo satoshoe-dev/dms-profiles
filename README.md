@@ -18,7 +18,7 @@ There are 29 transitions to choose from, among them fade, wipe, circle, doors, b
 
 ## Picker
 
-The picker comes in four views: a strip on a panel, the same strip without the panel, a carousel with the current profile large in the middle, and a grid that fills the screen. Previews can be portrait, landscape, square, circle, hexagon or diamond. In the grid, hexagons and diamonds are laid out as a honeycomb with the same gap as your windows. Outline, glow, check mark and corner radius can be turned off or adjusted.
+The picker comes in four views: a strip on a panel, the same strip without the panel, a carousel with the current profile large in the middle, and a grid that fills the screen. Previews can be portrait, landscape, square, circle, hexagon, diamond or skewed (a portrait card with a slanted frame). In the grid, hexagons and diamonds are laid out as a honeycomb with the same gap as your windows. Outline, glow, check mark and corner radius can be turned off or adjusted.
 
 Mouse wheel and arrow keys move the selection, Enter or a click applies it, Escape closes the picker.
 
