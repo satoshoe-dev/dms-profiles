@@ -307,5 +307,29 @@
     },
     "Drag a row to change the order.": {
         "Drag a row to change the order.": "Arrastra una fila para cambiar el orden."
+    },
+    "current wallpaper": {
+        "current wallpaper": "fondo actual"
+    },
+    "No pictures found in the wallpaper folder.": {
+        "No pictures found in the wallpaper folder.": "No hay imágenes en la carpeta de fondos."
+    },
+    "Use the original wallpaper file": {
+        "Use the original wallpaper file": "Usar el archivo original del fondo"
+    },
+    "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.": {
+        "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.": "Muestra la imagen desde donde está mientras exista, para que el ciclado de fondos y los carruseles vean su carpeta. La copia del perfil se usa cuando el archivo ya no existe."
+    },
+    "Choose folder": {
+        "Choose folder": "Elegir carpeta"
+    },
+    "Choose a wallpaper folder for this profile": {
+        "Choose a wallpaper folder for this profile": "Elige una carpeta de fondos para este perfil"
+    },
+    "Remove the wallpaper folder": {
+        "Remove the wallpaper folder": "Quitar la carpeta de fondos"
+    },
+    "Change folder: %1": {
+        "Change folder: %1": "Cambiar carpeta: %1"
     }
 }

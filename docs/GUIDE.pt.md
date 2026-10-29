@@ -68,7 +68,7 @@ Em “Transição”, escolha um tipo ou deixe em “Aleatória”. Com Aleatór
 
 ## 8. Gerencie os perfis
 
-A lista no topo das configurações do plugin tem botões para aplicar, renomear, mover para cima ou para baixo e excluir um perfil. O botão de desfazer ao lado do perfil ativo traz de volta o estado que ele tinha quando foi ativado.
+A lista no topo das configurações do plugin tem botões para aplicar, renomear, mover para cima ou para baixo e excluir um perfil. O botão de desfazer ao lado do perfil ativo traz de volta o estado que ele tinha quando foi ativado. A linha da pasta abaixo do nome de cada perfil define a pasta em que o seletor de papéis de parede (`dms ipc call profiles wallpapers`) abre: clique para escolher, o x ao lado a remove.
 
 ![Lista de perfis](images/08-list.png)
 

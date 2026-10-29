@@ -307,5 +307,29 @@
     },
     "Drag a row to change the order.": {
         "Drag a row to change the order.": "行をドラッグして並べ替えます。"
+    },
+    "current wallpaper": {
+        "current wallpaper": "現在の壁紙"
+    },
+    "No pictures found in the wallpaper folder.": {
+        "No pictures found in the wallpaper folder.": "壁紙フォルダーに画像が見つかりません。"
+    },
+    "Use the original wallpaper file": {
+        "Use the original wallpaper file": "元の壁紙ファイルを使う"
+    },
+    "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.": {
+        "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.": "画像が存在する間は、その場所から表示します。これにより壁紙のサイクルやカルーセルがそのフォルダーを参照できます。ファイルがなくなるとプロファイル内のコピーが使われます。"
+    },
+    "Choose folder": {
+        "Choose folder": "フォルダーを選択"
+    },
+    "Choose a wallpaper folder for this profile": {
+        "Choose a wallpaper folder for this profile": "このプロファイルの壁紙フォルダーを選択"
+    },
+    "Remove the wallpaper folder": {
+        "Remove the wallpaper folder": "壁紙フォルダーを解除"
+    },
+    "Change folder: %1": {
+        "Change folder: %1": "フォルダーを変更：%1"
     }
 }

@@ -68,7 +68,7 @@ Under "Transition" pick a type or leave it on "Random". With Random, click the t
 
 ## 8. Manage profiles
 
-The list at the top of the plugin settings has buttons to apply, rename, move up or down and delete a profile. The undo button next to the active profile brings back the state it had when it was activated.
+The list at the top of the plugin settings has buttons to apply, rename, move up or down and delete a profile. The undo button next to the active profile brings back the state it had when it was activated. The folder line under each profile name sets the folder where the wallpaper picker (`dms ipc call profiles wallpapers`) opens: click to choose one, the cross next to it removes it.
 
 ![Profile list](images/08-list.png)
 

@@ -24,7 +24,13 @@ A roda do mouse e as setas movem a seleção, Enter ou um clique aplica, Esc fec
 
 ## Salvamento
 
-As alterações que você faz nas configurações do DMS são salvas no perfil ativo depois de alguns segundos. Cada perfil lembra como estava quando foi ativado, então dá para desfazer as alterações na página de configurações. O papel de parede é copiado para dentro do perfil, então mover ou apagar o arquivo original não estraga nada.
+As alterações que você faz nas configurações do DMS são salvas no perfil ativo depois de alguns segundos. Cada perfil lembra como estava quando foi ativado, então dá para desfazer as alterações na página de configurações. O papel de parede é copiado para dentro do perfil, então mover ou apagar o arquivo original não estraga nada. Enquanto o arquivo original existir, a troca mostra o original e não a cópia, então o papel de parede continua na sua própria pasta (a rotação de papéis de parede do DMS e outros plugins veem a pasta inteira). A cópia é usada quando o arquivo não existe mais. Desative isso com "Usar o arquivo original do papel de parede" nas configurações.
+
+## Seletor de papel de parede
+
+`dms ipc call profiles wallpapers` abre o mesmo seletor com as imagens de uma pasta de papéis de parede. Enter ou um clique define uma; o salvamento automático a guarda no perfil ativo. Ele usa a visão e a forma do seletor que você escolheu para os perfis.
+
+Por padrão é a pasta do papel de parede atual. Um perfil pode ter a sua própria pasta de papéis de parede, para que o seletor sempre abra ali, mesmo que a imagem atual venha de outro lugar: ela é definida clicando na linha da pasta abaixo do nome do perfil nas configurações (o x a remove), ou com `dms ipc call profiles folder <slug> /caminho/das/imagens` (um caminho vazio a remove). Fica salva como `wallpaperFolder` no `profile.json` do perfil.
 
 Os perfis ficam em `~/.config/DankMaterialShell/profiles/`, uma pasta por perfil.
 
@@ -80,6 +86,8 @@ Mod+Shift+M { spawn "dms" "ipc" "call" "profiles" "toggle"; }
 
 ```sh
 dms ipc call profiles toggle
+dms ipc call profiles wallpapers
+dms ipc call profiles folder <slug> <path>
 dms ipc call profiles list
 dms ipc call profiles apply <slug>
 dms ipc call profiles create <name>

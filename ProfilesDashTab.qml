@@ -30,6 +30,8 @@ DashTabComponent {
     // Interface for the picker views, as the daemon offers it
     readonly property var profiles: root.daemon ? root.daemon.profiles : []
     property int selected: 0
+    readonly property string activeLabel: I18n.trFor("dmsProfiles", "active profile")
+    readonly property string emptyLabel: I18n.trFor("dmsProfiles", "No profiles yet. Create one in Settings under Profiles.")
     property int gridColumns: 1
     function choose(i) {
         if (i >= 0 && i < root.profiles.length)

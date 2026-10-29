@@ -44,7 +44,7 @@ Item {
     StyledText {
         anchors.centerIn: parent
         visible: row.count === 0
-        text: I18n.trFor("dmsProfiles", "No profiles yet. Create one in Settings under Profiles.")
+        text: (row.ctl ? row.ctl.emptyLabel : "")
         color: Theme.surfaceText
         font.pixelSize: Theme.fontSizeMedium
     }

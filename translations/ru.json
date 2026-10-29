@@ -307,5 +307,29 @@
     },
     "Drag a row to change the order.": {
         "Drag a row to change the order.": "Перетащите строку, чтобы изменить порядок."
+    },
+    "current wallpaper": {
+        "current wallpaper": "текущие обои"
+    },
+    "No pictures found in the wallpaper folder.": {
+        "No pictures found in the wallpaper folder.": "В папке с обоями не найдено картинок."
+    },
+    "Use the original wallpaper file": {
+        "Use the original wallpaper file": "Использовать исходный файл обоев"
+    },
+    "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.": {
+        "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.": "Показывает картинку там, где она лежит, пока она существует, чтобы смена обоев и карусели видели её папку. Копия в профиле используется, когда файла уже нет."
+    },
+    "Choose folder": {
+        "Choose folder": "Выбрать папку"
+    },
+    "Choose a wallpaper folder for this profile": {
+        "Choose a wallpaper folder for this profile": "Выберите папку с обоями для этого профиля"
+    },
+    "Remove the wallpaper folder": {
+        "Remove the wallpaper folder": "Сбросить папку с обоями"
+    },
+    "Change folder: %1": {
+        "Change folder: %1": "Изменить папку: %1"
     }
 }

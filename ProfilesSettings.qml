@@ -5,6 +5,7 @@ pragma ComponentBehavior: Bound
 
 import QtQuick
 import qs.Common
+import qs.Modals.FileBrowser
 import qs.Modules.Plugins
 import qs.Widgets
 
@@ -15,6 +16,7 @@ PluginSettings {
     property var profiles: []
     property string renameSlug: ""
     property string deleteSlug: ""
+    property string folderTarget: ""
 
     // Dragging a row to change the order. While dragging, the other rows
     // already make room, so the drop position is visible.
@@ -112,6 +114,45 @@ PluginSettings {
     }
 
     // Store operations finish asynchronously in the daemon
+    // An empty path takes the folder away again
+    function setFolder(slug, path) {
+        root.ipc(["folder", slug, path], () => root.later());
+    }
+
+    // One tooltip for all the folder lines. Moving from one hot area to the next
+    // can deliver "entered" before "exited"; only the owner may hide it.
+    property var hintOwner: null
+
+    DankTooltipV2 {
+        id: hint
+    }
+
+    function showHint(text, item) {
+        root.hintOwner = item;
+        hint.show(text, item, 0, 0, "top");
+    }
+
+    function hideHint(item) {
+        if (root.hintOwner !== item)
+            return;
+        root.hintOwner = null;
+        hint.hide();
+    }
+
+    // Same folder browser as the DMS wallpaper settings
+    FileBrowserModal {
+        id: folderBrowser
+        browserTitle: I18n.tr("Choose wallpaper folder", "wallpaper folder file browser title")
+        browserIcon: "folder"
+        browserType: "wallpaper"
+        folderMode: true
+        showHiddenFiles: true
+        onFileSelected: path => {
+            root.setFolder(root.folderTarget, path);
+            close();
+        }
+    }
+
     function later() {
         refreshTimer.restart();
     }
@@ -308,11 +349,72 @@ PluginSettings {
                             }
 
                             StyledText {
+                                visible: row.modelData.active
                                 width: parent.width
                                 elide: Text.ElideRight
-                                text: row.modelData.active ? I18n.trFor("dmsProfiles", "active") : ""
+                                text: I18n.trFor("dmsProfiles", "active")
                                 color: Theme.primary
                                 font.pixelSize: Theme.fontSizeSmall
+                            }
+
+                            // Wallpaper folder of the profile: click to choose, the cross removes it
+                            Row {
+                                width: parent.width
+                                spacing: 4
+
+                                DankIcon {
+                                    id: folderIcon
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    name: "folder"
+                                    size: 14
+                                    color: row.modelData.wallpaperFolder ? Theme.primary : Theme.surfaceVariantText
+                                }
+
+                                StyledText {
+                                    id: folderName
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: Math.min(implicitWidth, parent.width - folderIcon.width - (clearIcon.visible ? clearIcon.width + parent.spacing : 0) - parent.spacing)
+                                    elide: Text.ElideRight
+                                    maximumLineCount: 1
+                                    wrapMode: Text.NoWrap
+                                    text: row.modelData.wallpaperFolder ? row.modelData.wallpaperFolder.replace(/\/+$/, "").split("/").pop() : I18n.trFor("dmsProfiles", "Choose folder")
+                                    color: row.modelData.wallpaperFolder ? Theme.primary : Theme.surfaceVariantText
+                                    font.pixelSize: Theme.fontSizeSmall
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        hoverEnabled: true
+                                        cursorShape: Qt.PointingHandCursor
+                                        onEntered: root.showHint(row.modelData.wallpaperFolder ? I18n.trFor("dmsProfiles", "Change folder: %1").arg(row.modelData.wallpaperFolder) : I18n.trFor("dmsProfiles", "Choose a wallpaper folder for this profile"), parent)
+                                        onExited: root.hideHint(parent)
+                                        onClicked: {
+                                            root.hideHint(parent);
+                                            root.folderTarget = row.modelData.slug;
+                                            folderBrowser.open();
+                                        }
+                                    }
+                                }
+
+                                DankIcon {
+                                    id: clearIcon
+                                    visible: !!row.modelData.wallpaperFolder
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    name: "close"
+                                    size: 14
+                                    color: Theme.surfaceVariantText
+
+                                    MouseArea {
+                                        anchors.fill: parent
+                                        hoverEnabled: true
+                                        cursorShape: Qt.PointingHandCursor
+                                        onEntered: root.showHint(I18n.trFor("dmsProfiles", "Remove the wallpaper folder"), parent)
+                                        onExited: root.hideHint(parent)
+                                        onClicked: {
+                                            root.hideHint(parent);
+                                            root.setFolder(row.modelData.slug, "");
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -697,6 +799,13 @@ PluginSettings {
     ToggleSetting {
         settingKey: "autosave"
         label: I18n.trFor("dmsProfiles", "Save changes into the active profile")
+        defaultValue: true
+    }
+
+    ToggleSetting {
+        settingKey: "useOriginalWallpaper"
+        label: I18n.trFor("dmsProfiles", "Use the original wallpaper file")
+        description: I18n.trFor("dmsProfiles", "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.")
         defaultValue: true
     }
 

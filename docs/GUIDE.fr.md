@@ -68,7 +68,7 @@ Sous « Transition », choisissez un type ou laissez « Aléatoire ». Avec 
 
 ## 8. Gérer les profils
 
-La liste en haut des réglages du plugin propose des boutons pour appliquer, renommer, monter, descendre et supprimer un profil. Le bouton d'annulation à côté du profil actif rétablit l'état qu'il avait lors de son activation.
+La liste en haut des réglages du plugin propose des boutons pour appliquer, renommer, monter, descendre et supprimer un profil. Le bouton d'annulation à côté du profil actif rétablit l'état qu'il avait lors de son activation. La ligne de dossier sous le nom de chaque profil définit le dossier où s'ouvre le sélecteur de fonds d'écran (`dms ipc call profiles wallpapers`) : clic pour le choisir, la croix à côté le retire.
 
 ![Liste des profils](images/08-list.png)
 

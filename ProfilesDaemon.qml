@@ -116,6 +116,13 @@ PluginComponent {
         root._settings;
         return cfg("autosave", true);
     }
+    // Switch to the original wallpaper file while it exists, not to the copy in
+    // the profile folder. Then DMS and the wallpaper plugins see the folder the
+    // picture really lives in (cycling, carousel). The copy is the fallback.
+    readonly property bool useOriginalWallpaper: {
+        root._settings;
+        return cfg("useOriginalWallpaper", true);
+    }
 
     function clone(v) {
         return v === undefined ? undefined : JSON.parse(JSON.stringify(v));
@@ -628,7 +635,7 @@ PluginComponent {
     // once per call. Returns true if anything changed.
     function applyWallpapers(p, slug, wallpaper) {
         const s = p.dms.session;
-        const res = path => store.resolveWallpaper(slug, p, path);
+        const res = path => root.wallpaperFile(slug, p, path);
         const resMap = map => {
             const out = {};
             for (const k in (map || {}))
@@ -714,6 +721,46 @@ PluginComponent {
 
     // The switch runs as a chain of steps; each waits for the previous one.
     property string pendingSlug: ""
+    // Original wallpaper paths of the pending profile that still exist
+    property var originalsFound: ({})
+    // False while the check runs; the switch waits for it, or it could apply the
+    // copy and the next autosave would store the copy's path
+    property bool originalsReady: true
+
+    // Looks, while the switch starts, which original wallpaper files are still
+    // there. Answers long before the wallpaper is applied; until then (or when
+    // the option is off) the copies are used.
+    function findOriginals(p) {
+        root.originalsFound = {};
+        root.originalsReady = !root.useOriginalWallpaper;
+        if (!root.useOriginalWallpaper)
+            return;
+        const main = store.mainWallpaper(p.dms.session);
+        const paths = [main].concat(store.otherWallpapers(p.dms.session, main)).filter(v => v && !String(v).startsWith("#") && !String(v).startsWith(store.root + "/"));
+        if (paths.length === 0) {
+            root.originalsReady = true;
+            return;
+        }
+        const slug = root.pendingSlug;
+        store.sh(paths.map(v => "[ -f " + store.quote(v) + " ] && printf '%s\\n' " + store.quote(v) + "; ").join("") + "true", out => {
+            if (root.pendingSlug !== slug)
+                return;
+            const found = {};
+            String(out).split("\n").filter(v => v).forEach(v => found[v] = true);
+            root.originalsFound = found;
+            root.originalsReady = true;
+        });
+    }
+
+    // The file to show for a saved wallpaper path: the original if the option is
+    // on and it exists, else the copy in the profile folder (`copy` when the
+    // profile has no list of copies), else the path itself
+    function wallpaperFile(slug, p, path, copy) {
+        if (path && root.useOriginalWallpaper && root.originalsFound[path])
+            return path;
+        const saved = store.resolveWallpaper(slug, p, path);
+        return saved !== path || !copy ? saved : copy;
+    }
     property var pendingProfile: null
     property bool pendingSameColors: false
     property real appliedAt: 0
@@ -756,6 +803,7 @@ PluginComponent {
             root.appliedAt = 0;
             root.pendingSlug = slug;
             root.pendingProfile = p;
+            root.findOriginals(p);
             root.lastError = "";
             const want = p.dms.settings || {};
             const wantLight = p.dms.session ? p.dms.session.isLightMode === true : false;
@@ -864,7 +912,7 @@ PluginComponent {
         onRunningChanged: if (running) ticks = 0
         onTriggered: {
             ticks++;
-            if (root.settingsLoaded(root.pendingProfile.dms)) {
+            if (root.originalsReady && root.settingsLoaded(root.pendingProfile.dms)) {
                 stop();
                 root.mark("loaded");
                 root.stepApply();
@@ -883,7 +931,8 @@ PluginComponent {
 
     function stepApply() {
         const p = root.pendingProfile;
-        const wall = p.wallpaper ? store.dir(root.pendingSlug) + "/" + p.wallpaper : "";
+        const copy = p.wallpaper ? store.dir(root.pendingSlug) + "/" + p.wallpaper : "";
+        const wall = root.wallpaperFile(root.pendingSlug, p, store.mainWallpaper(p.dms.session), copy);
         root.applyProfile(p, wall, root.pendingSlug);
         root.mark("applied");
         root.appliedAt = Date.now();
@@ -1013,8 +1062,15 @@ PluginComponent {
     property int selected: 0
     property int gridColumns: 1
 
+    // The picker shows profiles, or (wallpapers) the pictures in the folder of
+    // the current wallpaper. The views read `profiles`, `selected` and
+    // `choose` either way; items have slug, name, wallpaper, thumb and active.
+    property bool wallpaperMode: false
+    property var wallpaperItems: []
     // The picker leaves out hidden profiles, but always shows the active one
-    readonly property var profiles: store.profiles.filter(p => p.shown !== false || p.active)
+    readonly property var profiles: root.wallpaperMode ? root.wallpaperItems : store.profiles.filter(p => p.shown !== false || p.active)
+    readonly property string activeLabel: root.wallpaperMode ? I18n.trFor("dmsProfiles", "current wallpaper") : I18n.trFor("dmsProfiles", "active profile")
+    readonly property string emptyLabel: root.wallpaperMode ? I18n.trFor("dmsProfiles", "No pictures found in the wallpaper folder.") : I18n.trFor("dmsProfiles", "No profiles yet. Create one in Settings under Profiles.")
     readonly property string pickerView: {
         root._settings;
         return cfg("pickerView", "strip");
@@ -1027,10 +1083,53 @@ PluginComponent {
     function choose(index) {
         if (index < 0 || index >= root.profiles.length)
             return;
+        if (root.wallpaperMode) {
+            root.setWallpaper(root.profiles[index].wallpaper);
+            root.hidePicker();
+            return;
+        }
         root.apply(root.profiles[index].slug);
     }
 
+    // Sets the picture like the DMS file browser does; autosave then stores it
+    // in the active profile
+    function setWallpaper(path) {
+        SessionData.setWallpaper(path);
+        SessionData.wallpaperCyclingFolderPath = "";
+        SessionData.saveSettings();
+    }
+
+    // Opens the picker on the wallpaper folder of the active profile, else on
+    // the pictures next to the current wallpaper
+    function showWallpapers() {
+        if (SessionData.perMonitorWallpaper === true)
+            return "the wallpaper picker does not support a wallpaper per monitor";
+        const cur = SessionData.wallpaperPath || store.mainWallpaper(root.snapshot().session);
+        const entry = store.find(store.activeSlug);
+        const dir = entry && entry.wallpaperFolder ? entry.wallpaperFolder.replace(/\/+$/, "") : cur.substring(0, cur.lastIndexOf("/"));
+        if (!dir || (!entry?.wallpaperFolder && (!cur || cur.startsWith("#"))))
+            return "no wallpaper picture";
+        const exts = ["jpg", "jpeg", "png", "webp", "bmp", "gif", "avif", "jxl"];
+        const test = exts.map(e => "-iname " + store.quote("*." + e)).join(" -o ");
+        store.sh("find -L " + store.quote(dir) + " -maxdepth 1 -type f \\( " + test + " \\) | sort", out => {
+            root.wallpaperItems = String(out).split("\n").filter(f => f).map(f => ({
+                        "slug": f,
+                        "name": f.substring(f.lastIndexOf("/") + 1).replace(/\.[^.]+$/, ""),
+                        "wallpaper": f,
+                        "thumb": f.split("/").map(encodeURIComponent).join("/"),
+                        "active": f === cur,
+                        "shown": true
+                    }));
+            root.wallpaperMode = true;
+            root.selected = Math.max(0, root.wallpaperItems.findIndex(x => x.active));
+            picker.visible = true;
+            Qt.callLater(() => keyCatcher.forceActiveFocus());
+        });
+        return "started";
+    }
+
     function showPicker() {
+        root.wallpaperMode = false;
         store.refresh(() => {
             const active = root.profiles.findIndex(x => x.active);
             root.selected = active >= 0 ? active : 0;
@@ -1041,6 +1140,7 @@ PluginComponent {
 
     function hidePicker() {
         picker.visible = false;
+        root.wallpaperMode = false;
     }
 
     PanelWindow {
@@ -1153,8 +1253,8 @@ PluginComponent {
     }
 
     // ------------------------------------------------------------------ IPC
-    // dms ipc call profiles toggle | list | apply SLUG | create NAME | save
-    //   rename SLUG NAME | remove SLUG | move SLUG left|right|N | reset SLUG
+    // dms ipc call profiles toggle | wallpapers | list | apply SLUG | create NAME | save
+    //   rename SLUG NAME | folder SLUG PATH | remove SLUG | move SLUG left|right|N | reset SLUG
     //   previewTransition TYPE | setOption KEY VALUE | themeAuto on|off|status
     IpcHandler {
         target: "profiles"
@@ -1169,6 +1269,32 @@ PluginComponent {
 
         function list(): string {
             return JSON.stringify(store.profiles);
+        }
+
+        // dms ipc call profiles folder SLUG /path/to/pictures  (empty path: back to
+        // the folder of the current wallpaper). The picker opens on this folder.
+        function folder(slug: string, path: string): string {
+            if (!store.find(slug))
+                return "no profile " + slug;
+            let dir = path.replace(/\/+$/, "");
+            if (dir.startsWith("~/"))
+                dir = Quickshell.env("HOME") + dir.substring(1);
+            if (dir && !dir.startsWith("/"))
+                return "the folder must be an absolute path";
+            store.setWallpaperFolder(slug, dir, err => {
+                if (err)
+                    console.warn("Profiles: folder failed:", err);
+            });
+            return "started";
+        }
+
+        // Picker of the pictures in the wallpaper folder of the active profile
+        function wallpapers(): string {
+            if (picker.visible) {
+                root.hidePicker();
+                return "closed";
+            }
+            return root.showWallpapers();
         }
 
         // dms ipc call profiles show SLUG true|false  (shown in the picker or not)
@@ -1258,7 +1384,7 @@ PluginComponent {
         }
 
         function setOption(key: string, value: string): string {
-            const allowed = ["transition", "transitionMs", "transitionGlow", "transitionPool", "pickerView", "pickerShape", "pickerGlow", "pickerRing", "pickerCheck", "pickerCornerTheme", "pickerCorner", "profilePlugins", "saveCommand", "applyCommand", "autosave"];
+            const allowed = ["useOriginalWallpaper", "transition", "transitionMs", "transitionGlow", "transitionPool", "pickerView", "pickerShape", "pickerGlow", "pickerRing", "pickerCheck", "pickerCornerTheme", "pickerCorner", "profilePlugins", "saveCommand", "applyCommand", "autosave"];
             if (allowed.indexOf(key) < 0)
                 return "unknown key, allowed: " + allowed.join(", ");
             let v = value;

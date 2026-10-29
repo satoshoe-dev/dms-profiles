@@ -24,7 +24,13 @@ La rueda del ratón y las flechas mueven la selección, Intro o un clic la aplic
 
 ## Guardado
 
-Los cambios que haces en los ajustes de DMS se guardan en el perfil activo después de unos segundos. Cada perfil recuerda cómo era al activarse, así que puedes deshacer tus cambios desde la página de ajustes. El fondo de pantalla se copia dentro del perfil, así que mover o borrar el archivo original no lo rompe.
+Los cambios que haces en los ajustes de DMS se guardan en el perfil activo después de unos segundos. Cada perfil recuerda cómo era al activarse, así que puedes deshacer tus cambios desde la página de ajustes. El fondo de pantalla se copia dentro del perfil, así que mover o borrar el archivo original no lo rompe. Mientras el archivo original exista, al cambiar de perfil se muestra el original y no la copia, así que el fondo sigue en su propia carpeta (el ciclado de fondos de DMS y otros complementos ven toda la carpeta). La copia se usa cuando el archivo ya no existe. Desactívalo con «Usar el archivo original del fondo» en los ajustes.
+
+## Selector de fondos
+
+`dms ipc call profiles wallpapers` abre el mismo selector con las imágenes de una carpeta de fondos. Intro o un clic establece una; el guardado automático la guarda en el perfil activo. Usa la vista y la forma del selector que elegiste para los perfiles.
+
+Por defecto es la carpeta del fondo actual. Un perfil puede tener su propia carpeta de fondos, de modo que el selector se abra siempre ahí, aunque la imagen actual venga de otro sitio: se define pulsando la línea de carpeta bajo el nombre del perfil en los ajustes (la cruz la quita), o con `dms ipc call profiles folder <slug> /ruta/a/imagenes` (una ruta vacía la quita). Se guarda como `wallpaperFolder` en el `profile.json` del perfil.
 
 Los perfiles están en `~/.config/DankMaterialShell/profiles/`, una carpeta por perfil.
 
@@ -80,6 +86,8 @@ Mod+Shift+M { spawn "dms" "ipc" "call" "profiles" "toggle"; }
 
 ```sh
 dms ipc call profiles toggle
+dms ipc call profiles wallpapers
+dms ipc call profiles folder <slug> <path>
 dms ipc call profiles list
 dms ipc call profiles apply <slug>
 dms ipc call profiles create <name>

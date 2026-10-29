@@ -68,7 +68,7 @@ In «Transizione» scegli un tipo oppure lascia «Casuale». Con Casuale, fai cl
 
 ## 8. Gestisci i profili
 
-L'elenco in cima alle impostazioni del plugin ha i pulsanti per applicare, rinominare, spostare in su o in giù ed eliminare un profilo. Il pulsante per annullare accanto al profilo attivo ripristina lo stato che aveva al momento dell'attivazione.
+L'elenco in cima alle impostazioni del plugin ha i pulsanti per applicare, rinominare, spostare in su o in giù ed eliminare un profilo. Il pulsante per annullare accanto al profilo attivo ripristina lo stato che aveva al momento dell'attivazione. La riga della cartella sotto il nome di ogni profilo imposta la cartella in cui si apre il selettore degli sfondi (`dms ipc call profiles wallpapers`): clic per sceglierla, la croce accanto la rimuove.
 
 ![Elenco dei profili](images/08-list.png)
 

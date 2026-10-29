@@ -68,7 +68,7 @@ En «Transición», elige un tipo o déjala en «Aleatoria». Con Aleatoria, haz
 
 ## 8. Gestiona los perfiles
 
-La lista de la parte superior de los ajustes del complemento tiene botones para aplicar, renombrar, subir, bajar y eliminar un perfil. El botón de deshacer junto al perfil activo recupera el estado que tenía cuando se activó.
+La lista de la parte superior de los ajustes del complemento tiene botones para aplicar, renombrar, subir, bajar y eliminar un perfil. El botón de deshacer junto al perfil activo recupera el estado que tenía cuando se activó. La línea de carpeta bajo el nombre de cada perfil define la carpeta en la que se abre el selector de fondos (`dms ipc call profiles wallpapers`): clic para elegirla, la cruz junto a ella la quita.
 
 ![Lista de perfiles](images/08-list.png)
 

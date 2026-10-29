@@ -24,7 +24,13 @@
 
 ## 保存
 
-在 DMS 设置中所做的更改会在几秒后保存到当前配置。每个配置都会记住启用时的样子，因此可以在设置页面撤销更改。壁纸会复制到配置中，移动或删除原始文件不会影响它。
+在 DMS 设置中所做的更改会在几秒后保存到当前配置。每个配置都会记住启用时的样子，因此可以在设置页面撤销更改。壁纸会复制到配置中，移动或删除原始文件不会影响它。只要原始文件还存在，切换时就会显示原文件而不是副本，这样壁纸仍留在自己的文件夹里（DMS 的壁纸轮换和其他插件能看到整个文件夹）。文件消失后才使用副本。可在设置中通过“使用原始壁纸文件”关闭。
+
+## 壁纸选择器
+
+`dms ipc call profiles wallpapers` 会用壁纸文件夹中的图片打开同一个选择器。按 Enter 或点击即可设置，自动保存会把它存入当前配置。它使用你为配置选择的选择器视图和形状。
+
+默认是当前壁纸所在的文件夹。配置也可以有自己的壁纸文件夹，这样选择器总是在那里打开，即使当前图片来自别处：点击设置中配置名称下方的文件夹行来设置（点击×清除），或用 `dms ipc call profiles folder <slug> /path/to/pictures`（路径为空则清除）。它以 `wallpaperFolder` 保存在该配置的 `profile.json` 中。
 
 配置保存在 `~/.config/DankMaterialShell/profiles/`，每个配置一个文件夹。
 
@@ -80,6 +86,8 @@ Mod+Shift+M { spawn "dms" "ipc" "call" "profiles" "toggle"; }
 
 ```sh
 dms ipc call profiles toggle
+dms ipc call profiles wallpapers
+dms ipc call profiles folder <slug> <path>
 dms ipc call profiles list
 dms ipc call profiles apply <slug>
 dms ipc call profiles create <name>

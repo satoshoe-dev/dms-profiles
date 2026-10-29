@@ -82,7 +82,7 @@ Item {
     StyledText {
         anchors.centerIn: parent
         visible: carousel.count === 0
-        text: I18n.trFor("dmsProfiles", "No profiles yet. Create one in Settings under Profiles.")
+        text: (carousel.ctl ? carousel.ctl.emptyLabel : "")
         color: Theme.surfaceText
         font.pixelSize: Theme.fontSizeLarge
     }
@@ -142,7 +142,7 @@ Item {
 
         StyledText {
             anchors.horizontalCenter: parent.horizontalCenter
-            text: parent.current ? ((parent.current.active ? I18n.trFor("dmsProfiles", "active profile") : I18n.trFor("dmsProfiles", "Enter or click to apply")) + "  ·  " + (carousel.ctl.selected + 1) + " / " + carousel.count) : ""
+            text: parent.current ? ((parent.current.active ? carousel.ctl.activeLabel : I18n.trFor("dmsProfiles", "Enter or click to apply")) + "  ·  " + (carousel.ctl.selected + 1) + " / " + carousel.count) : ""
             color: carousel.textColorDim
             font.pixelSize: Theme.fontSizeMedium
         }

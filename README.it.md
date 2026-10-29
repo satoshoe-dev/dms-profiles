@@ -24,7 +24,13 @@ La rotella del mouse e i tasti freccia spostano la selezione, Invio o un clic la
 
 ## Salvataggio
 
-Le modifiche che fai nelle impostazioni di DMS vengono salvate nel profilo attivo dopo pochi secondi. Ogni profilo ricorda com'era quando è stato attivato, quindi puoi annullare le modifiche dalla pagina delle impostazioni. Lo sfondo viene copiato nel profilo, per cui spostare o eliminare il file originale non lo rovina.
+Le modifiche che fai nelle impostazioni di DMS vengono salvate nel profilo attivo dopo pochi secondi. Ogni profilo ricorda com'era quando è stato attivato, quindi puoi annullare le modifiche dalla pagina delle impostazioni. Lo sfondo viene copiato nel profilo, per cui spostare o eliminare il file originale non lo rovina. Finché il file originale esiste, il cambio di profilo mostra l'originale e non la copia, così lo sfondo resta nella sua cartella (la rotazione degli sfondi di DMS e gli altri plugin vedono l'intera cartella). La copia si usa quando il file non c'è più. Disattivalo con «Usa il file originale dello sfondo» nelle impostazioni.
+
+## Selettore degli sfondi
+
+`dms ipc call profiles wallpapers` apre lo stesso selettore con le immagini di una cartella di sfondi. Invio o un clic ne imposta una; il salvataggio automatico la memorizza nel profilo attivo. Usa la vista e la forma del selettore scelte per i profili.
+
+Per impostazione predefinita è la cartella dello sfondo attuale. Un profilo può avere una propria cartella di sfondi, così il selettore si apre sempre lì, anche se l'immagine attuale viene da un altro posto: si imposta cliccando sulla riga della cartella sotto il nome del profilo nelle impostazioni (la croce la rimuove), oppure con `dms ipc call profiles folder <slug> /percorso/delle/immagini` (un percorso vuoto la rimuove). È salvata come `wallpaperFolder` nel `profile.json` del profilo.
 
 I profili si trovano in `~/.config/DankMaterialShell/profiles/`, una cartella per profilo.
 
@@ -80,6 +86,8 @@ Mod+Shift+M { spawn "dms" "ipc" "call" "profiles" "toggle"; }
 
 ```sh
 dms ipc call profiles toggle
+dms ipc call profiles wallpapers
+dms ipc call profiles folder <slug> <path>
 dms ipc call profiles list
 dms ipc call profiles apply <slug>
 dms ipc call profiles create <name>

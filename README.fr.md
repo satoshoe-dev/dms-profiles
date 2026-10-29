@@ -24,7 +24,13 @@ La molette de la souris et les flèches déplacent la sélection, Entrée ou un 
 
 ## Enregistrement
 
-Les modifications faites dans les paramètres de DMS sont enregistrées dans le profil actif après quelques secondes. Chaque profil garde en mémoire son état au moment de l'activation, ce qui permet d'annuler les modifications depuis la page des paramètres. Le fond d'écran est copié dans le profil, donc déplacer ou supprimer le fichier d'origine ne le casse pas.
+Les modifications faites dans les paramètres de DMS sont enregistrées dans le profil actif après quelques secondes. Chaque profil garde en mémoire son état au moment de l'activation, ce qui permet d'annuler les modifications depuis la page des paramètres. Le fond d'écran est copié dans le profil, donc déplacer ou supprimer le fichier d'origine ne le casse pas. Tant que le fichier d'origine existe, le changement de profil affiche l'original et non la copie, si bien que le fond d'écran reste dans son propre dossier (le défilement des fonds d'écran de DMS et les autres plugins voient tout le dossier). La copie sert quand le fichier a disparu. Désactivez cela avec « Utiliser le fichier d'origine du fond d'écran » dans les réglages.
+
+## Sélecteur de fond d'écran
+
+`dms ipc call profiles wallpapers` ouvre le même sélecteur avec les images d'un dossier de fonds d'écran. Entrée ou un clic en définit une ; l'enregistrement automatique la conserve dans le profil actif. Il utilise la vue et la forme du sélecteur choisies pour les profils.
+
+Par défaut, c'est le dossier du fond d'écran actuel. Un profil peut avoir son propre dossier de fonds d'écran, pour que le sélecteur s'ouvre toujours là, même si l'image actuelle vient d'ailleurs : on le définit en cliquant sur la ligne de dossier sous le nom du profil dans les réglages (la croix le retire), ou avec `dms ipc call profiles folder <slug> /chemin/vers/images` (un chemin vide le retire). Il est enregistré sous `wallpaperFolder` dans le `profile.json` du profil.
 
 Les profils se trouvent dans `~/.config/DankMaterialShell/profiles/`, un dossier par profil.
 
@@ -80,6 +86,8 @@ Mod+Shift+M { spawn "dms" "ipc" "call" "profiles" "toggle"; }
 
 ```sh
 dms ipc call profiles toggle
+dms ipc call profiles wallpapers
+dms ipc call profiles folder <slug> <path>
 dms ipc call profiles list
 dms ipc call profiles apply <slug>
 dms ipc call profiles create <name>

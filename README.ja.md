@@ -24,7 +24,13 @@
 
 ## 保存
 
-DMS の設定で行った変更は、数秒後にアクティブなプロファイルに保存されます。各プロファイルは有効にした時点の状態を覚えているので、設定ページから変更を元に戻せます。壁紙はプロファイル内にコピーされるため、元のファイルを移動したり削除したりしても壊れません。
+DMS の設定で行った変更は、数秒後にアクティブなプロファイルに保存されます。各プロファイルは有効にした時点の状態を覚えているので、設定ページから変更を元に戻せます。壁紙はプロファイル内にコピーされるため、元のファイルを移動したり削除したりしても壊れません。元のファイルが存在する間は、切り替え時にコピーではなく元のファイルが表示されるため、壁紙は自身のフォルダーに置かれたままになります（DMS の壁紙サイクルや他のプラグインはフォルダー全体を参照できます）。ファイルがなくなるとコピーが使われます。設定の「元の壁紙ファイルを使う」でオフにできます。
+
+## 壁紙ピッカー
+
+`dms ipc call profiles wallpapers` は、同じピッカーを壁紙フォルダーの画像で開きます。Enter またはクリックで壁紙に設定され、自動保存でアクティブなプロファイルに保存されます。プロファイル用に選んだピッカーのビューと形がそのまま使われます。
+
+デフォルトでは現在の壁紙のフォルダーです。プロファイルごとに専用の壁紙フォルダーを設定すると、現在の画像が別の場所のものでも、ピッカーは常にそこで開きます。設定は、設定画面でプロファイル名の下のフォルダー行をクリックして設定します（×で解除）、または `dms ipc call profiles folder <slug> /path/to/pictures` で行います（空のパスで解除）。プロファイルの `profile.json` に `wallpaperFolder` として保存されます。
 
 プロファイルは `~/.config/DankMaterialShell/profiles/` に、プロファイルごとに1つのフォルダーとして保存されます。
 
@@ -80,6 +86,8 @@ Mod+Shift+M { spawn "dms" "ipc" "call" "profiles" "toggle"; }
 
 ```sh
 dms ipc call profiles toggle
+dms ipc call profiles wallpapers
+dms ipc call profiles folder <slug> <path>
 dms ipc call profiles list
 dms ipc call profiles apply <slug>
 dms ipc call profiles create <name>

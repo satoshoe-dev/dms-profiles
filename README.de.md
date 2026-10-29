@@ -24,7 +24,13 @@ Mausrad und Pfeiltasten bewegen die Auswahl, Enter oder ein Klick wendet das Pro
 
 ## Speichern
 
-Änderungen in den DMS-Einstellungen landen nach ein paar Sekunden im aktiven Profil. Jedes Profil merkt sich, wie es beim Aktivieren aussah, daher lassen sich die Änderungen auf der Einstellungsseite zurücknehmen. Das Hintergrundbild wird ins Profil kopiert. Wird die Originaldatei verschoben oder gelöscht, bleibt das Profil also intakt.
+Änderungen in den DMS-Einstellungen landen nach ein paar Sekunden im aktiven Profil. Jedes Profil merkt sich, wie es beim Aktivieren aussah, daher lassen sich die Änderungen auf der Einstellungsseite zurücknehmen. Das Hintergrundbild wird ins Profil kopiert. Wird die Originaldatei verschoben oder gelöscht, bleibt das Profil also intakt. Solange die Originaldatei existiert, zeigt der Wechsel das Original und nicht die Kopie, sodass das Hintergrundbild in seinem eigenen Ordner bleibt (der Hintergrundwechsel von DMS und andere Plugins sehen den ganzen Ordner). Die Kopie wird verwendet, wenn die Datei fehlt. Mit „Originaldatei des Hintergrundbilds verwenden“ in den Einstellungen lässt sich das abschalten.
+
+## Hintergrundauswahl
+
+`dms ipc call profiles wallpapers` öffnet dieselbe Auswahl mit den Bildern eines Hintergrundordners. Eingabe oder ein Klick setzt eines; das automatische Speichern legt es im aktiven Profil ab. Sie nutzt die Ansicht und Form, die du für Profile gewählt hast.
+
+Standardmäßig ist das der Ordner des aktuellen Hintergrundbilds. Ein Profil kann stattdessen einen eigenen Hintergrundordner haben, sodass die Auswahl immer dort öffnet, auch wenn das aktuelle Bild von woanders stammt: Er wird mit einem Klick auf die Ordnerzeile unter dem Profilnamen in den Einstellungen (das Kreuz entfernt ihn) oder mit `dms ipc call profiles folder <slug> /pfad/zu/bildern` gesetzt (ein leerer Pfad entfernt ihn). Gespeichert wird er als `wallpaperFolder` in der `profile.json` des Profils.
 
 Profile liegen in `~/.config/DankMaterialShell/profiles/`, ein Ordner pro Profil.
 
@@ -80,6 +86,8 @@ Mod+Shift+M { spawn "dms" "ipc" "call" "profiles" "toggle"; }
 
 ```sh
 dms ipc call profiles toggle
+dms ipc call profiles wallpapers
+dms ipc call profiles folder <slug> <path>
 dms ipc call profiles list
 dms ipc call profiles apply <slug>
 dms ipc call profiles create <name>

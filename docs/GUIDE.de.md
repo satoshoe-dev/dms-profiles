@@ -68,7 +68,7 @@ Wähle unter „Übergang beim Wechsel“ eine Art oder lass ihn auf „Zufälli
 
 ## 8. Profile verwalten
 
-Die Liste oben in den Plugin-Einstellungen hat Schaltflächen, um ein Profil anzuwenden, umzubenennen, nach oben oder unten zu verschieben und zu löschen. Die Schaltfläche zum Rückgängigmachen neben dem aktiven Profil stellt den Zustand wieder her, den es beim Aktivieren hatte.
+Die Liste oben in den Plugin-Einstellungen hat Schaltflächen, um ein Profil anzuwenden, umzubenennen, nach oben oder unten zu verschieben und zu löschen. Die Schaltfläche zum Rückgängigmachen neben dem aktiven Profil stellt den Zustand wieder her, den es beim Aktivieren hatte. Die Ordnerzeile unter jedem Profilnamen legt den Ordner fest, in dem die Hintergrundauswahl (`dms ipc call profiles wallpapers`) öffnet: Klick zum Wählen, das Kreuz daneben entfernt ihn.
 
 ![Profilliste](images/08-list.png)
 

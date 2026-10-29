@@ -307,5 +307,29 @@
     },
     "Drag a row to change the order.": {
         "Drag a row to change the order.": "拖动一行即可调整顺序。"
+    },
+    "current wallpaper": {
+        "current wallpaper": "当前壁纸"
+    },
+    "No pictures found in the wallpaper folder.": {
+        "No pictures found in the wallpaper folder.": "壁纸文件夹中没有找到图片。"
+    },
+    "Use the original wallpaper file": {
+        "Use the original wallpaper file": "使用原始壁纸文件"
+    },
+    "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.": {
+        "Show the picture from where it lives, as long as it exists, so wallpaper cycling and carousels see its folder. The copy in the profile is used when the file is gone.": "只要图片存在，就从其所在位置显示，这样壁纸轮换和轮播能看到它的文件夹。文件消失后使用配置中的副本。"
+    },
+    "Choose folder": {
+        "Choose folder": "选择文件夹"
+    },
+    "Choose a wallpaper folder for this profile": {
+        "Choose a wallpaper folder for this profile": "为此配置选择壁纸文件夹"
+    },
+    "Remove the wallpaper folder": {
+        "Remove the wallpaper folder": "清除壁纸文件夹"
+    },
+    "Change folder: %1": {
+        "Change folder: %1": "更改文件夹：%1"
     }
 }

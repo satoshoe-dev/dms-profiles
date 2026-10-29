@@ -110,6 +110,8 @@ Item {
                     "slug": slug,
                     "name": p.name || slug,
                     "wallpaper": wall,
+                    // folder the wallpaper picker opens; empty: the one of the current wallpaper
+                    "wallpaperFolder": typeof p.wallpaperFolder === "string" ? p.wallpaperFolder : "",
                     // small preview for the picker; the full wallpaper takes
                     // noticeably longer to load (about 6 MB PNG per profile)
                     "thumb": hasThumb ? store.dir(slug) + "/thumb.jpg" : wall,
@@ -297,6 +299,38 @@ Item {
                 profile.wallpaperFiles = files;
             }
             store.writeJson(d + "/profile.json", profile, () => store.refresh(callback));
+        });
+    }
+
+    // Sets (or, with an empty path, clears) the wallpaper folder of a profile.
+    // Also in .start/, or "undo changes" would bring the old folder back.
+    function setWallpaperFolder(slug, path, callback) {
+        const d = store.dir(slug);
+        const patch = file => {
+            let p;
+            try {
+                p = JSON.parse(store.readText(file));
+            } catch (e) {
+                return false;
+            }
+            if (path)
+                p.wallpaperFolder = path;
+            else
+                delete p.wallpaperFolder;
+            return p;
+        };
+        const p = patch(d + "/profile.json");
+        if (!p) {
+            callback && callback("failed");
+            return;
+        }
+        const start = patch(d + "/.start/profile.json");
+        store.writeJson(d + "/profile.json", p, () => {
+            const done = () => store.refresh(() => callback && callback(""));
+            if (start)
+                store.writeJson(d + "/.start/profile.json", start, done);
+            else
+                done();
         });
     }
 
